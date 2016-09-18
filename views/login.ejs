@@ -1,11 +1,12 @@
 <html>
 <head>
-  <!-- required for incorporating JQuery -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-
   <!-- required for incorporating boostrap -->
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
 
+  <!-- required for incorporating JQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <!-- required for google OAuth -->
   <script src="https://apis.google.com/js/platform.js" async defer></script>
 
@@ -31,7 +32,8 @@
   <title>Study App - Login!</Title>
 </head>
 <body>
-  <div class="jumbotron vertical-center">
+  <% include partial/navbar.ejs %>
+  <div class="vertical-center">
     <div class="container">
       <div class="row">
         <div class="col-md-4 col-md-offset-4">
