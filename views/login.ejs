@@ -1,10 +1,21 @@
 <html>
 <head>
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+  <!-- required for incorporating JQuery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+  <!-- required for incorporating boostrap -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- required for google OAuth -->
   <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+  <!-- required for incorporating angular -->
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js"></script>
-  <script src="login.js"></script>
+
+  <!-- -->
+  <script src="public/login.js"></script>
+
+  <!-- !!!!needs to be moved out of this file for design!!!! -->
   <style>
     .vertical-center {
       min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
@@ -14,24 +25,13 @@
       align-items: center;
     }
   </style>
+
   <!-- set Client id validation -->
   <meta name="google-signin-client_id" content='73713153185-ml2ui4qa12p4tpfgiuhgebpsi374gnqc.apps.googleusercontent.com'>
   <title>Study App - Login!</Title>
 </head>
 
 <body>
-  <div id="fb-root"></div>
-  <script>
-
-      (function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.7&appId=1092275464194633";
-        fjs.parentNode.insertBefore(js, fjs);
-      }(document, 'script', 'facebook-jssdk'));
-  </script>
-
   <div class="jumbotron vertical-center">
     <div class="container">
       <div class="row">

@@ -1,4 +1,4 @@
-require("../models/users")
+//require("../models/users")
 
 //set CLient ID and google auth settings
 var _auth2;
@@ -28,6 +28,14 @@ function onSignIn(googleUser) {
 
 }
 
+(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.7&appId=1092275464194633";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+
 //Sign out a user
 function signOut() {
   var auth2 = gapi.auth2.getAuthInstance();
@@ -35,3 +43,16 @@ function signOut() {
     console.log('User signed out.');
   });
 }
+
+//Jquery functions - availabe when DOM ready
+$(function(){
+  $('.btn').mousedown(function(){
+    $(this).toggleClass("btn-primary");
+    $(this).toggleClass("btn-success");
+  });
+
+  $('.btn').mouseup(function(){
+    $(this).toggleClass("btn-primary");
+    $(this).toggleClass("btn-success");
+  });
+});
