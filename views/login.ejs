@@ -1,38 +1,4 @@
-<html>
-<head>
-  <!-- required for incorporating boostrap -->
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- required for incorporating JQuery -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <!-- required for google OAuth -->
-  <script src="https://apis.google.com/js/platform.js" async defer></script>
-
-  <!-- required for incorporating angular -->
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js"></script>
-
-  <!-- -->
-  <script src="public/javascripts/login.js"></script>
-
-  <!-- !!!!needs to be moved out of this file for design!!!! -->
-  <style>
-    .vertical-center {
-      min-height: 80%;  /* Fallback for browsers do NOT support vh unit */
-      min-height: 80vh; /* These two lines are counted as one :-)       */
-
-      display: flex;
-      align-items: center;
-    }
-  </style>
-
-  <!-- set Client id validation -->
-  <meta name="google-signin-client_id" content='73713153185-ml2ui4qa12p4tpfgiuhgebpsi374gnqc.apps.googleusercontent.com'>
-  <title>Study App - Login!</Title>
-</head>
-<body>
-  <% include partial/navbar.ejs %>
   <div class="vertical-center">
     <div class="container col-xs-10">
       <div class="row">
@@ -62,3 +28,25 @@
 </body>
 
 </html>
+
+
+
+  <div class="vertical-center">
+    <div class="container col-xs-10"></div>
+    <div class="row">
+      <div class="col-md-4 col-md-offset-4"></div>
+      <div class="page-header">
+        <h1>Login to Blog</h1>
+      </div>
+      <div class="form-group">
+        <input type="text" name="user" placeholder="username" class="form-control"/><br/>
+        <input type="password" name="pass" placeholder="password" class="form-control"/><br/>
+        <button type="submit" class="btn btn-primary">login</button>
+      </div>
+      <!-- Google sign in button-->
+      <div data-onsuccess="onSignIn" class="g-signin2"></div>
+      <!-- Sign out button-->
+      <div class="singOut"><a href="#" onclick="signOut();">Sign out</a>
+      </div>
+    </div>
+  </div>

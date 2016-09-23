@@ -1,0 +1,16 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+a {
+  color: #00b7ff;
+}
+.vertical-center {
+  min-height: 80%;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+}
+.signOut {
+  color: #00f;
+}
