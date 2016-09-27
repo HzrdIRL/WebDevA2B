@@ -2,7 +2,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     //bcrypt = require('bcrypt'),
     autoIncrement = require('mongoose-auto-increment');
-mongoose.connect("mongodb://localhost:27020");
+mongoose.connect("mongodb://localhost:27017");
 var db = mongoose.connection;
 require("mongoose-type-email");
 
