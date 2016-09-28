@@ -41,9 +41,12 @@ html
           li: a(href="/") Contact Us
 
         ul.nav.navbar-nav.navbar-right
-          li: a(href="#")
-            span.glyphicon.glyphicon-user Sign Up
-          li: a(href="#")
-            span.glyphicon.glyphicon-log-in Login
+          if loggedIn
+
+          else
+            li: a(href="/register")
+              span.glyphicon.glyphicon-user Sign Up
+            li: a(href="/login")
+              span.glyphicon.glyphicon-log-in Login
 
     block content

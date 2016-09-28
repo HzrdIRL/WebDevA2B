@@ -5,11 +5,15 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    res.render('index', { title: 'home', loggedIn: req.session.loggedIn, errors: req.session.errors, email: req.session.email, password: req.session.password  });
+    res.render('index', { title: 'home'});
+});
+
+router.get('/login', function(req, res, next) {
+    res.render('login', { title: 'login', loggedIn: req.session.loggedIn, errors: req.session.errors, email: req.session.email, password: req.session.password  });
 });
 
 router.get('/register', function(req, res, next) {
-    res.render('register', { title: 'register' });
+    res.render('register', { title: 'register', loggedIn: req.session.loggedIn, errors: req.session.errors, email: req.session.email, password: req.session.password  });
 });
 
 router.post('/submitLogin', function(req, res, next){
@@ -31,19 +35,20 @@ router.post('/submitLogin', function(req, res, next){
 
 router.post('/submitReg', function(req, res, next){
     req.check('email', 'Invalid email address').isEmail();
-    req.check('password', 'Password is invalid').isLength({min : 4}).equals("Confirm Password");
+    req.check('password', 'Password is invalid').isLength({min : 4}).equals("confirm password");
 
-    var errors = req.validationErrors();
+    var errors = req.validationErrors(true);
     if(errors){
         req.session.errors = errors;
         req.session.registered = false;
+        res.redirect('/register');
     }
     else{
         req.session.registered = true;
         req.session.email = req.body.email;
         req.session.password = req.body.password;
     }
-    res.redirect('/Users:User');
+    res.redirect('/');
 });
 
 module.exports = router;
