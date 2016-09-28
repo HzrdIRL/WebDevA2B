@@ -1,7 +1,7 @@
 //
    Created by ppp on 21/09/2016.
     Sean Kearney
-    
+
 extends layout
 block content
         .vertical-center
@@ -13,18 +13,25 @@ block content
 
                         form.form-group(action="/submitReg", method="post")
                             input(class="form-control", type="text", name="name", placeholder="Name or Alias: 'John Movie-Lover'")
-                            if errors
-                                div
-                                    ul
-                                        each item in errors
-                                            li= item.msg
                             br
+                            if errors
+                                p= item.msg
+                                br
                             input(class="form-control", type="text", name="email", placeholder="Email: JohnML@jmail.com")
                             br
+                            if errors
+                                p= item.msg
+                                br
                             input(class="form-control", type="password", name="password", placeholder="Password: Minimum 4 characters")
                             br
+                            if errors
+                                p= item.msg
+                                br
                             input(class="form-control", type="password", name="confirm password", placeholder="Confirm Password")
                             br
+                            if errors
+                                p= item.msg
+                                br
                             button(class="btn btn-primary", type="submit") login
 
         script(src="javascripts/login.js", type='text/javascript')
