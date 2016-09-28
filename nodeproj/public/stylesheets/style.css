@@ -21,10 +21,23 @@ a {
   colour: #00f;
 }
 .movieTile {
+  float: left;
+  width: 500px;
+  height: 250px;
   padding: 20px;
   padding-top: 50px;
   margin: 5px;
   color: #fff;
   background-color: #1a3a95;
   text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
+}
+.movieDetails {
+  text-align: center;
+}
+.commentForm {
+  text-align: right;
+}
+.commentText {
+  height: 100px;
+  width: 300px;
 }

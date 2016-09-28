@@ -4,8 +4,17 @@ extends layout
 block content
     .container.col-xs-10
         .row
-            if(movie)
-                img(src=("https://image.tmdb.org/t/p/w500"+movie.poster_path))
-                .page-header
-                    h1= movie.title
-                p= movie.overview
+            .col-xs-10.movieDetails
+                if(movie)
+                    img(src=("https://image.tmdb.org/t/p/w500"+movie.poster_path))
+                    .page-header
+                        h1= movie.title
+                    p= movie.overview
+                    br
+                    .comments= comments
+                    br
+                    form.form-group.commentForm(action="javascript:onCommentSubmit()")
+                        textarea.commentText
+                        br
+                        button.btn(type="submit") Comment
+    script(src="javascripts/movies.js", type='text/javascript')

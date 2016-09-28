@@ -16,7 +16,10 @@ router.get('/:movie', function(req, res, next){
     movieDB.movieInfo({id: req.params.movie}, function(err, result){
         if(err) console.log(err);
         var info = result;
-        res.render('movie', {movie: info});
+
+        Comment.find({}).populate('movies').run(function(err, comments){
+            res.render('movie', {movie: info, comments: comments});
+        });
     });
 });
 
