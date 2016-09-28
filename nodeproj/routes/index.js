@@ -1,6 +1,6 @@
 var express = require('express');
 var mongoose = require('mongoose');
-var db = require('../modesl/db');
+var db = require('../models/db');
 var router = express.Router();
 
 /* GET home page. */

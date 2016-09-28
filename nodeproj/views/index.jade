@@ -18,8 +18,7 @@ block content
                                 ul
                                     each item in errors
                                         li= item.msg
-
-
+                            
                     form.form-group(action="/submitLogin", method="post")
                         input(class="form-control", type="text", name="email", placeholder="email adress")
                         br
