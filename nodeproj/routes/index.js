@@ -1,11 +1,16 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var db = require('../models/db');
+var request = require('request');
 var router = express.Router();
+var movieDB = require('moviedb')('84c5c5e5c0b722ea081108dbb52810f1');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    res.render('index', { title: 'home'});
+    movieDB.searchMovie({query: 'Star Trek'}, function(err, result){
+        if(err) console.log(err);
+        res.send(result);
+    });
 });
 
 router.get('/login', function(req, res, next) {
