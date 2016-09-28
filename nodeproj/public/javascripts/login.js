@@ -55,3 +55,15 @@ $(function(){
     $(this).toggleClass("btn-success");
   });
 });
+
+function registerUser() {
+  var name = null;
+  var email = null;
+  var password = null;
+
+
+  $.ajax(
+
+  );
+
+}
