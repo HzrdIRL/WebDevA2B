@@ -9,6 +9,7 @@ var expressSession = require('express-session');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var movies = require('./routes/movies');
 require('./models/db');
 
 var app = express();
@@ -31,6 +32,7 @@ app.use(expressSession({secret: 'max', saveUninitialized: false, resave: false})
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/movies', movies);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

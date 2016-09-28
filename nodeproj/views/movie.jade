@@ -1,0 +1,11 @@
+//
+   Created by Hails on 28/09/2016.
+extends layout
+block content
+    .container.col-xs-10
+        .row
+            if(movie)
+                img(src=("https://image.tmdb.org/t/p/w500"+movie.poster_path))
+                .page-header
+                    h1= movie.title
+                p= movie.overview

@@ -9,16 +9,16 @@ var movieDB = require('moviedb')('84c5c5e5c0b722ea081108dbb52810f1');
 router.get('/', function(req, res, next) {
     movieDB.searchMovie({query: 'Star Trek'}, function(err, result){
         if(err) console.log(err);
-        res.send(result);
+        res.render('index', { title: 'Home', movies: result.results});
     });
 });
 
 router.get('/login', function(req, res, next) {
-    res.render('login', { title: 'login', loggedIn: req.session.loggedIn, errors: req.session.errors, email: req.session.email, password: req.session.password  });
+    res.render('login', { title: 'Login', loggedIn: req.session.loggedIn, errors: req.session.errors, email: req.session.email, password: req.session.password  });
 });
 
 router.get('/register', function(req, res, next) {
-    res.render('register', { title: 'register', loggedIn: req.session.loggedIn, errors: req.session.errors, email: req.session.email, password: req.session.password  });
+    res.render('register', { title: 'Register', loggedIn: req.session.loggedIn, errors: req.session.errors, email: req.session.email, password: req.session.password  });
 });
 
 router.post('/submitLogin', function(req, res, next){
