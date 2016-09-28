@@ -6,7 +6,7 @@ block content
                 .col-md-4.col-md-offset-4
                     .page-header
                         h1 Login to Blog
-                    if success
+                    if loggedIn
                         p congrats on logging in
                         if email && password
                             p= email
@@ -20,14 +20,14 @@ block content
                                         li= item.msg
 
 
-                    form.form-group(action="/submit", method="post")
+                    form.form-group(action="/submitLogin", method="post")
                         input(class="form-control", type="text", name="email", placeholder="email adress")
                         br
                         input(class="form-control", type="password", name="password", placeholder="password")
                         br
                         button(class="btn btn-primary", type="submit") login
                     // Google sign in button
-                    .g-signin2(data-onsuccess="onSignIn")
+                    .g-signin2(data-onsuccess="onSignIn") hullo
 
                     // Sign out button
                     .singOut: a(href="#" onclick="signOut();") Sign out

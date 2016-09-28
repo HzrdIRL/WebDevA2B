@@ -26,6 +26,7 @@ app.use(expressValidator());
 app.use(cookieParser());
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/node_modules', express.static(__dirname + '/node_modules'));
 app.use(expressSession({secret: 'max', saveUninitialized: false, resave: false}));
 
 app.use('/', routes);
