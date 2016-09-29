@@ -1,0 +1,15 @@
+//
+   Created by Hails on 28/09/2016.
+extends layout
+block content
+    .container.col-xs-10
+        .row
+            .page-header
+                h1 Movies
+
+            if(movies)
+                    for movie in movies
+                        if(movie)
+                            a(href=("/movies/"+movie.id))
+                                .col-xs-12.movieTile(style="background-image:url('https://image.tmdb.org/t/p/w500" + movie.backdrop_path + "');")
+                                    h1= movie.title
