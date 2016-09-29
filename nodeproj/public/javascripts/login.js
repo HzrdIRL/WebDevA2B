@@ -1,5 +1,6 @@
 //require("../models/users")
 //set CLient ID and google auth settings
+var http = require('http');
 var _auth2;
 var client_id = "73713153185-ml2ui4qa12p4tpfgiuhgebpsi374gnqc.apps.googleusercontent.com";
 var _onGoogleLoad = function(){
@@ -57,13 +58,19 @@ $(function(){
 });
 
 function registerUser() {
-  var name = null;
-  var email = null;
-  var password = null;
+  $.ajax
+  ({
+    type: "POST",
+    url: "/",
+    crossDomain:true,
+    dataType: "json",
+    data:JSON.stringify({name: "Dennis", address: {city: "Dub", country: "IE"}})
+  }).done(function ( data ) {
+    alert("ajax callback response:"+JSON.stringify(data));
+  })
 
-
-  $.ajax(
-
-  );
+// write the request parameters
+  req.write('post=data&is=specified&like=this');
+  req.end();
 
 }

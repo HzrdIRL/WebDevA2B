@@ -38,7 +38,7 @@ router.post('/submitReg', function(req, res, next){
     req.check('email', 'Invalid email address').isEmail();
     req.check('password', 'Password is invalid').isLength({min : 4}).equals("confirm password");
 
-    var errors = req.validationErrors(true);
+    var errors = req.validationErrors();
     if(errors){
         req.session.errors = errors;
         req.session.registered = false;
