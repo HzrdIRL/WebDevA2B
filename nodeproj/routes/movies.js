@@ -17,10 +17,36 @@ router.get('/:movie', function(req, res, next){
         if(err) console.log(err);
         var info = result;
 
-        Comment.find({}).populate('movies').run(function(err, comments){
-            res.render('movie', {movie: info, comments: comments});
+        db.Movie
+            .find({id: req.params.movie})
+            .populate('comments')
+            .exec(function(err, movie){
+                if(err) return handleError(err);
+                var comments = movie.comments;
+                console.log(comments);
+                res.render('movie', {movie: info, comments: comments});
         });
     });
+});
+
+router.get('/:movie/comments/:comment', function (req, res, next) {
+    db.Comment
+        .findOne({movie: req.params.movie, id: req.params.comment})
+        .exec(function(err, commentInfo){
+            if(err) return handleError(err);
+            console.log(commentInfo);
+        });
+});
+
+router.post('/:movie/comments', function (req, res, next) {
+    db.Movie.findOneAndUpdate(
+        {movie: req.params.movie},
+        {$push: {"comments": {body: body, user: user}}},
+        {safe: true, upsert: true},
+        function(err, model) {
+            console.log(err);
+        }
+    );
 });
 
 module.exports = router;

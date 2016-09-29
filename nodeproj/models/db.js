@@ -35,10 +35,9 @@ var Comment = mongoose.model('Comment', Comment_Schema);
 
 var Movie_Schema = new Schema({
     movie: Number,
-    comments: {type: Schema.ObjectId, ref: Comment}
+    comments: [{type: Schema.ObjectId, ref: Comment}]
 });
-var Movie = mongoose.model('Movie', Movie);
-
+var Movie = mongoose.model('Movie', Movie_Schema);
 
 module.exports = {
     User : User,
