@@ -1,5 +1,5 @@
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema,
+    Schema = mongoose.Schema;
     //bcrypt = require('bcrypt'),
     autoIncrement = require('mongoose-auto-increment');
 mongoose.connect("mongodb://localhost:27017/partB");
