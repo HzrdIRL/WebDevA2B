@@ -18,43 +18,72 @@ router.get('/login', function(req, res, next) {
 });
 
 router.get('/register', function(req, res, next) {
-    res.render('register', { title: 'Register', loggedIn: req.session.loggedIn, errors: req.session.errors, email: req.session.email, password: req.session.password  });
+    res.render('register', { title: 'Register', loggedIn: req.session.loggedIn, name: req.session.name, errors: req.session.errors, email: req.session.email});
 });
 
 router.post('/submitLogin', function(req, res, next){
+    var user = null;
+    req.check('email', 'Invalid format: Must be like host@host.com').isEmail();
+    var errors = req.validationErrors();
+    if(!errors){
+        console.log('email okidoke :)');
+        db.User.findOne({email: req.body.email}, function (err, user){
+            if (err) {
+                console.error('error, no entry found');
+                res.redirect('/login');
+            }else{
+                req.session.matchPassword = user.password;
+                req.check(req.body.password, 'Password is invalid: does not match the database');
+                errors = null;
+                errors = req.validationErrors();
+                if (errors) {
+                    console.error('failed to match password');
+                    req.session.errors = errors;
+                    req.session.loggedIn = false;
+                    res.redirect('/login');
+                } else {
+                    console.log('password matched');
+                    req.session.errors = null;
+                    req.session.loggedIn = true;
+                    req.session.name = user.name;
+                    res.redirect('/');
+                }
+            }
+        })
+    }else{
+        req.session.errors = errors;
+        res.redirect('/login');
+    }
+});
+
+router.post('/submitReg', function(req, res, next){
+    req.check('name', 'Please enter an alias/name').notEmpty();
     req.check('email', 'Invalid email address').isEmail();
-    req.check('password', 'Password is invalid').isLength({min : 4});
+    req.check('password', 'Password is invalid: Password fields must match').equals(req.body.confirmPassword);
+    req.check('password', 'Password is invalid: Must have at least four characters').isLength({min : 4});
 
     var errors = req.validationErrors();
     if(errors){
         req.session.errors = errors;
-        req.session.loggedIn = false;
-    }
-    else{
-        req.session.loggedIn = true;
-        req.session.email = req.body.email;
-        req.session.password = req.body.password;
-    }
-    res.redirect('/');
-});
-
-router.post('/submitReg', function(req, res, next){
-    req.check('name', 'Invalid email address').notEmpty();
-    req.check('email', 'Invalid email address').isEmail();
-    req.check('password', 'Password is invalid').isLength({min : 4}).equals("confirm password");
-
-    var errors = req.validationErrors(true);
-    if(errors){
-        req.session.errors = errors;
         req.session.registered = false;
+        req.session.name = req.body.name;
+        req.session.email = req.body.email;
         res.redirect('/register');
     }
-    else{
+    else {
+        req.session.errors = null;
         req.session.registered = true;
-        req.session.email = req.body.email;
-        req.session.password = req.body.password;
+        req.session.name = req.body.name;
+        var userInfo = {
+            name: req.body.name,
+            email: req.body.email,
+            password: req.body.password,
+            google_id: null
+        };
+        var user = new db.User(userInfo);
+        user.save();
+        res.redirect('/');
     }
-    res.redirect('/');
 });
 
 module.exports = router;

@@ -20,9 +20,9 @@ block content
                                         li= item.msg
                             
                     form.form-group(action="/submitLogin", method="post")
-                        input(class="form-control", type="text", name="email", placeholder="email adress")
+                        input(class="form-control", type="text", id="email", name="email", placeholder="email address")
                         br
-                        input(class="form-control", type="password", name="password", placeholder="password")
+                        input(class="form-control", type="password", id="password", name="password", placeholder="password")
                         br
                         button(class="btn btn-primary", type="submit") login
                     // Google sign in button
