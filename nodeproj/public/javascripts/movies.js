@@ -5,7 +5,8 @@ function onComment(movie){
     event.preventDefault();
     //var data = $('#theForm').serialize();
     var data = {};
-    data.body = "hello"
+    data.message = "hello"
+    data.user = "hails"
     console.log(data);
     $.ajax({
         type: "POST",
