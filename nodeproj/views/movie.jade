@@ -13,7 +13,11 @@ block content
                     br
                     if(comments)
                         .comments
-                            .comment= comments
+                            for comment in comments
+                                    .comment
+                                        h1= comment.user
+                                        p= comment.body
+                                        p= comment.date
                     br
                     form.form-group.commentForm(id="theForm", action="javascript:;", onsubmit="onComment(" + movie.id + ")")
                         textarea.commentText(id="message", name="message")

@@ -3,19 +3,15 @@
  */
 function onComment(movie){
     event.preventDefault();
-    //var data = $('#theForm').serialize();
-    var data = {};
-    data.message = "hello"
-    data.user = "hails"
-    console.log(data);
+    var data = {}
+    data.message = $("#message").val();
     $.ajax({
         type: "POST",
         url:  "/movies/"+ movie +'/comments',
         data: JSON.stringify(data),
         contentType: 'application/json',
-        success : function(){
-            console.log("success");
-            $('.comments').append($('.comment').html(result));
+        success : function(response){
+            $('.comments').append("<div class='comment'><h1>" + response.user + "</h1><p>" + data.message + "</p><p>" + response.date + "</p></div>");
         }
     });
 }
