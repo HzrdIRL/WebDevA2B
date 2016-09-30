@@ -1,6 +1,6 @@
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
-    //bcrypt = require('bcrypt'),
+    Schema = mongoose.Schema,
+    bcrypt = require('bcrypt-nodejs'),
     autoIncrement = require('mongoose-auto-increment');
 mongoose.connect("mongodb://localhost:27017/partB");
 var db = mongoose.connection;
@@ -13,14 +13,25 @@ db.once('open', function(){});
 autoIncrement.initialize(db);
 
 var Users_Schema = new Schema({
-    name: String,
-    email: {type: mongoose.SchemaTypes.Email, required: true},
-    password: {type: String, required: true},
-    google_id: Number
+    local: {
+        name: String,
+        email: {type: mongoose.SchemaTypes.Email, required: true},
+        password: {type: String, required: true},
+        google_id: Number
+    }
 });
-Users_Schema.plugin(autoIncrement.plugin, 'User');
-var User = mongoose.model('User', Users_Schema);
 
+Users_Schema.plugin(autoIncrement.plugin, 'User');
+
+Users_Schema.methods.generateHash = function(password) {
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+};
+
+Users_Schema.methods.validPassword = function(password) {
+    return bcrypt.compareSync(password, this.local.password);
+};
+
+var User = mongoose.model('User', Users_Schema);
 
 var Comment_Schema = new Schema({
     body: String,

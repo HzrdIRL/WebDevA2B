@@ -88,3 +88,9 @@ router.post('/:movie/comments', function (req, res, next) {
 });
 
 module.exports = router;
+
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated())
+        return next();
+    res.redirect('/');
+}
