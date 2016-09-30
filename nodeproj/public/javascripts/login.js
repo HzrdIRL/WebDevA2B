@@ -57,7 +57,7 @@ $(function(){
   });
 });
 
-function registerUser() {
+function addComment() {
   $.ajax
   ({
     type: "POST",

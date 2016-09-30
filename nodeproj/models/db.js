@@ -13,8 +13,7 @@ db.once('open', function(){});
 autoIncrement.initialize(db);
 
 var Users_Schema = new Schema({
-    firstName: String,
-    lastName: String,
+    name: String,
     email: {type: mongoose.SchemaTypes.Email, required: true},
     password: {type: String, required: true},
     google_id: Number
