@@ -15,11 +15,15 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/login', function(req, res, next) {
+    var errors = req.session.errors;
+    req.session.errors = null;
     res.render('login', { title: 'Login', loggedIn: req.session.loggedIn, errors: req.session.errors, email: req.session.email, password: req.session.password  });
 });
 
 router.get('/register', function(req, res, next) {
-    res.render('register', { title: 'Register', loggedIn: req.session.loggedIn, name: req.session.name, errors: req.session.errors, email: req.session.email});
+    var errors = req.session.errors;
+    req.session.errors = null;
+    res.render('register', { title: 'Register', loggedIn: req.session.loggedIn, name: req.session.name, errors: errors, email: req.session.email});
 });
 
 router.post('/submitLogin', passport.authenticate('local-login', {
@@ -35,9 +39,3 @@ router.post('/submitReg', passport.authenticate('local-signup', {
 }));
 
 module.exports = router;
-
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated())
-        return next();
-    res.redirect('/');
-}
