@@ -12,10 +12,11 @@ block content
                     p= movie.overview
                     br
                     if(comments)
-                        .comments= comments
+                        .comments
+                            .comment= comments
                     br
-                    form.form-group.commentForm(action="javascript:onCommentSubmit()")
-                        textarea.commentText
+                    form.form-group.commentForm(id="theForm", action="javascript:;", onsubmit="onComment(" + movie.id + ")")
+                        textarea.commentText(id="message", name="message")
                         br
                         button.btn(type="submit") Comment
-    script(src="javascripts/movies.js", type='text/javascript')
+    script(src="/javascripts/movies.js", type='text/javascript')

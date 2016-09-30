@@ -39,14 +39,52 @@ router.get('/:movie/comments/:comment', function (req, res, next) {
 });
 
 router.post('/:movie/comments', function (req, res, next) {
-    db.Movie.findOneAndUpdate(
-        {movie: req.params.movie},
-        {$push: {"comments": {body: body, user: user}}},
-        {safe: true, upsert: true},
-        function(err, model) {
-            console.log(err);
-        }
-    );
+    console.log('received');
+    var body = req.body;
+    console.log(req.session.user);
+    db.User.findOne({name: req.session.user}, function(ewrr, user){
+        body.user = user;
+    });
+    console.log(body);
+    var success = false;
+    db.Movie.findOne({movie: req.params.movie},function(){
+        db.Movie.findOneAndUpdate(
+            {movie: req.params.movie},
+            {$push: {"comments": {
+                body: body.message,
+                movie: req.params.movie,
+                date: new Date(),
+                user: body.user
+            }}},
+            {safe: true, upsert: true},
+            function(err, model) {
+                console.log(err);
+            }
+        );
+        var comment = db.Comment({
+            body: body.message,
+            movie: req.params.movie,
+            date: new Date(),
+            user: body.user
+        });
+        comment.save();
+        success = true;
+    });
+    if(!success){
+        var movie = db.Movie({
+            movie: req.params.movie,
+            comments : [{
+                body: body.message,
+                movie: req.params.movie,
+                date: new Date(),
+                user: body.user
+            }]
+        });
+        movie.save();
+        console.log('new');
+    }
+
+    console.log('done');
 });
 
 module.exports = router;
