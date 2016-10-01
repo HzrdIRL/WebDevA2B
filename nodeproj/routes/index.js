@@ -10,6 +10,7 @@ var passport = require('passport');
 router.get('/', function(req, res, next) {
     movieDB.searchMovie({query: 'Star Trek'}, function(err, result){
         if(err) console.log(err);
+        console.log(req.isAuthenticated());
         res.render('index', { title: 'Home', movies: result.results});
     });
 });
@@ -26,7 +27,7 @@ router.get('/register', function(req, res, next) {
     res.render('register', { title: 'Register', loggedIn: req.session.loggedIn, name: req.session.name, errors: errors, email: req.session.email});
 });
 
-router.post('/submitLogin', passport.authenticate('local', {
+router.post('/submitLogin', passport.authenticate('local-login', {
     successRedirect: '/',
     failureRedirect: '/login',
     failureFlash: true,

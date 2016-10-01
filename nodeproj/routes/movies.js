@@ -7,6 +7,7 @@ var db = require('../models/db');
 var request = require('request');
 var router = express.Router();
 var movieDB = require('moviedb')('84c5c5e5c0b722ea081108dbb52810f1');
+var passport = require('passport');
 
 router.get('/', function(req, res, next){
    res.send('you have boldly gone too far, turn back');
@@ -28,21 +29,16 @@ router.get('/:movie', function(req, res, next){
 
 router.get('/:movie/comments/:comment', function (req, res, next) {
     db.Comment
-        .findOne({movie: req.params.movie, id: req.params.comment})
+        .findOne({movie: req.params.movie, _id: req.params.comment})
         .exec(function(err, commentInfo){
             if(err) return handleError(err);
             console.log(commentInfo);
         });
 });
 
-router.post('/:movie/comments', function (req, res, next) {
+router.post('/:movie/comments', isLoggedIn, function (req, res, next) {
     console.log('received');
     var body = req.body;
-    body.user = "hails";
-    var user = db.User.findOne({name: body.user}, function(err, user){
-        if(err) console.log(err);
-    });
-    var userId = user._id;
     console.log(body);
     req.session.successUpdate = false;
     var comment = db.Comment({
@@ -51,7 +47,7 @@ router.post('/:movie/comments', function (req, res, next) {
         date: new Date(),
         inReply: null,
         replies: [],
-        user: mongoose.Types.ObjectId(userId)
+        user: mongoose.Types.ObjectId(req.user._id)
     });
     comment.save();
     var commentId = comment._id;
@@ -83,21 +79,16 @@ router.post('/:movie/comments', function (req, res, next) {
         movie.save();
         console.log('new');
     }
-    req.body.user = userId;
+    req.body.user = req.user.name;
     req.body.date = comment.date;
     res.send(req.body);
     console.log('done');
 });
 
 
-router.post('/:movie/comments/:comment/reply', function (req, res, next) {
+router.post('/:movie/comments/:comment/reply', isLoggedIn, function (req, res, next) {
     console.log('received');
     var body = req.body;
-    body.user = "hails";
-    var userId = null;
-    db.User.findOne({name: body.user}, function(ewrr, user){
-        userId = user._id;
-    });
     console.log(body);
     var comment = db.Comment({
         body: body.message,
@@ -105,7 +96,7 @@ router.post('/:movie/comments/:comment/reply', function (req, res, next) {
         date: new Date(),
         inReply : mongoose.Types.ObjectId(req.params.comment),
         replies : [],
-        user: mongoose.Types.ObjectId(userId)
+        user: mongoose.Types.ObjectId(req.user._id)
     });
     comment.save();
     var commentId = comment._id;
@@ -124,7 +115,8 @@ router.post('/:movie/comments/:comment/reply', function (req, res, next) {
 module.exports = router;
 
 function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated())
+    if (req.isAuthenticated() && req.user){
         return next();
+    }
     res.redirect('/');
 }
