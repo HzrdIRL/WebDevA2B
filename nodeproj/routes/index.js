@@ -26,7 +26,7 @@ router.get('/register', function(req, res, next) {
     res.render('register', { title: 'Register', loggedIn: req.session.loggedIn, name: req.session.name, errors: errors, email: req.session.email});
 });
 
-router.post('/submitLogin', passport.authenticate('local-login', {
+router.post('/submitLogin', passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/login',
     failureFlash: true,

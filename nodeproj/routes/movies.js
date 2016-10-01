@@ -17,13 +17,10 @@ router.get('/:movie', function(req, res, next){
         if(err) console.log(err);
         var info = result;
 
-        db.Movie
-            .find({id: req.params.movie})
-            .populate('comments')
-            .exec(function(err, movie){
+        db.Comment
+            .find({movie: req.params.movie})
+            .exec(function(err, comments){
                 if(err) return handleError(err);
-                var comments = movie.comments;
-                console.log(comments);
                 res.render('movie', {movie: info, comments: comments});
         });
     });
@@ -41,49 +38,86 @@ router.get('/:movie/comments/:comment', function (req, res, next) {
 router.post('/:movie/comments', function (req, res, next) {
     console.log('received');
     var body = req.body;
-    console.log(req.session.user);
-    db.User.findOne({name: req.session.user}, function(ewrr, user){
-        body.user = user;
+    body.user = "hails";
+    var user = db.User.findOne({name: body.user}, function(err, user){
+        if(err) console.log(err);
     });
+    var userId = user._id;
     console.log(body);
-    var success = false;
-    db.Movie.findOne({movie: req.params.movie},function(){
+    req.session.successUpdate = false;
+    var comment = db.Comment({
+        body: body.message,
+        movie: req.params.movie,
+        date: new Date(),
+        inReply: null,
+        replies: [],
+        user: mongoose.Types.ObjectId(userId)
+    });
+    comment.save();
+    var commentId = comment._id;
+    var movie = db.Movie.findOne(
+        {movie: req.params.movie},
+        function(err, movie){
+            if(err){
+                req.session.successUpdate = false;
+            }
+        }
+    );
+    if(movie != null) {
         db.Movie.findOneAndUpdate(
             {movie: req.params.movie},
-            {$push: {"comments": {
-                body: body.message,
-                movie: req.params.movie,
-                date: new Date(),
-                user: body.user
-            }}},
+            {$push: {comments: mongoose.Types.ObjectId(commentId)}},
             {safe: true, upsert: true},
-            function(err, model) {
+            function (err, model) {
                 console.log(err);
             }
         );
-        var comment = db.Comment({
-            body: body.message,
-            movie: req.params.movie,
-            date: new Date(),
-            user: body.user
-        });
-        comment.save();
-        success = true;
-    });
-    if(!success){
+        req.session.successUpdate = true;
+        console.log('updated');
+    }
+    if(movie == null){
         var movie = db.Movie({
             movie: req.params.movie,
-            comments : [{
-                body: body.message,
-                movie: req.params.movie,
-                date: new Date(),
-                user: body.user
-            }]
+            comments : [mongoose.Types.ObjectId(commentId)]
         });
         movie.save();
         console.log('new');
     }
+    req.body.user = userId;
+    req.body.date = comment.date;
+    res.send(req.body);
+    console.log('done');
+});
 
+
+router.post('/:movie/comments/:comment/reply', function (req, res, next) {
+    console.log('received');
+    var body = req.body;
+    body.user = "hails";
+    var userId = null;
+    db.User.findOne({name: body.user}, function(ewrr, user){
+        userId = user._id;
+    });
+    console.log(body);
+    var comment = db.Comment({
+        body: body.message,
+        movie: req.params.movie,
+        date: new Date(),
+        inReply : mongoose.Types.ObjectId(req.params.comment),
+        replies : [],
+        user: mongoose.Types.ObjectId(userId)
+    });
+    comment.save();
+    var commentId = comment._id;
+    db.Comment.findOneAndUpdate(
+        {movie: req.params.movie, _id: req.params.comment},
+        {$push: {"replies": mongoose.TypesObjectId(commentId)}},
+        {safe: true, upsert: true},
+        function(err, model) {
+            console.log(err);
+        }
+    );
+    res.send(request.body);
     console.log('done');
 });
 
