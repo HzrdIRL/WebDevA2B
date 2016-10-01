@@ -7,17 +7,26 @@ block content
             .col-xs-10.movieDetails
                 if(movie)
                     img(src=("https://image.tmdb.org/t/p/w500"+movie.poster_path))
-                    .page-header
-                        h1= movie.title
-                    p= movie.overview
+                    .col-xs-12.movieInfo
+                        .page-header
+                            h1= movie.title
+                        p= movie.overview
                     br
                     if(comments)
-                        .comments
-                            for comment in comments
+                        .col-xs-12
+                            .comments
+                                for comment in comments
                                     .comment
-                                        h1= comment.user.local.name
-                                        p= comment.body
-                                        p= comment.date
+                                        h1.commentTitle= comment._id
+                                        br
+                                        p.commentBody= comment.body
+                                        br
+                                        table.commentTable
+                                            tr.commentTableRow
+                                                td.time= comment.date
+                                                td.username= comment.user.local.name
+                                    for reply in comment.replies
+                                        p= reply.body
                     br
                     .error(show="false")
                         p Comment must not be blank

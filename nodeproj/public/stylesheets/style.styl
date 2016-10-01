@@ -6,7 +6,6 @@ a
 .vertical-center
     min-height: 80%  // Fallback for browsers do NOT support vh unit
     min-height: 80vh // These two lines are counted as one :-)
-
     display: flex
     align-items: center
 .page-header
@@ -18,22 +17,23 @@ a
   width: 100%
 .my-button
   colour: blue
-movie-title
+.movie-title
   position: absolute
-  bottom: 0px
+  bottom: 0
 .movie-list
   text-align: center
   justify-content: center
 .movieTile
   position: relative
   display: inline-block
-  text-align: bottom
   width: 500px
   height: 250px
   margin: 5px
   color: white
   background-color: #1a3a95
-  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black
+.movieInfo
+  min-width:
 .movieDetails
   text-align: center
 .commentForm
@@ -43,11 +43,32 @@ movie-title
   width: 300px
 .comment
   width: 100%
-  border: 4px solid #0f0f0f
+  border: 4px solid #2B2B2B
   padding: 20px
+  margin: auto
+  margin-top: 5px
+  max-width: 600px
+  align-items: center
+.commentTable
+  width: 100%
+.commentTableRow
+  width: 100%
+.commentBody
+  margin: 15px
+  font-size: 20px
+  text-align: left
+h1.commentTitle
+  text-align: center
+td.username
+  text-align: right
+  font-size: 14px
+td.time
+  text-align: left
+  font-size: 10px
 .error
   display: none
 .comments
   width: 100%
   height: 100%
-  margin: 20px
+  min-width: 400px
+  text-align: center
