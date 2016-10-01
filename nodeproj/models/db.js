@@ -37,9 +37,15 @@ var Comment_Schema = new Schema({
     body: String,
     movie: Number,
     date: Date,
-    user: {type: Schema.ObjectId, ref: User},
-    inReply : {type: Schema.ObjectId, ref: Comment},
-    replies: [{type: Schema.ObjectId, ref: Comment}]
+    user: { type: Number, ref: 'User' },
+    replies: [
+        {
+            body: String,
+            movie: Number,
+            date: Date,
+            user: Number
+        }
+    ]
 });
 Comment_Schema.plugin(autoIncrement.plugin, 'Comment');
 var Comment = mongoose.model('Comment', Comment_Schema);
@@ -47,7 +53,7 @@ var Comment = mongoose.model('Comment', Comment_Schema);
 
 var Movie_Schema = new Schema({
     movie: Number,
-    comments: [{type: Schema.ObjectId, ref: Comment}]
+    comments: [{ type: Number, ref: 'Comment' }]
 });
 var Movie = mongoose.model('Movie', Movie_Schema);
 
