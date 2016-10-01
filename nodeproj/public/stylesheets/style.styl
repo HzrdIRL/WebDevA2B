@@ -32,6 +32,25 @@ a
   color: white
   background-color: #1a3a95
   text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black
+  z-index: 1;
+.movieTileOver
+  @extend .movieTile
+  background: none
+  z-index: 10
+  position: absolute
+  margin-left: -505px
+.movieTileOver .movieTileOverInner
+  @extend .movieTileOver
+  margin-left: -250px
+  margin-top: 0px
+  padding: 10px
+  position: realtive
+  background-color: rgba(26,26,26,.75)
+  visibility: hidden
+.movieTileOver:hover .movieTileOverInner
+  visibility: visible
+.movieTileOverInner p
+  margin: 0px
 .movieInfo
   min-width: 400px
   margin-top: 30px

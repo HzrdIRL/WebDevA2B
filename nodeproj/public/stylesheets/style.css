@@ -32,7 +32,9 @@ a {
   text-align: center;
   justify-content: center;
 }
-.movieTile {
+.movieTile,
+.movieTileOver,
+.movieTileOver .movieTileOverInner {
   position: relative;
   display: inline-block;
   width: 500px;
@@ -41,6 +43,28 @@ a {
   color: #fff;
   background-color: #1a3a95;
   text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
+  z-index: 1;
+}
+.movieTileOver,
+.movieTileOver .movieTileOverInner {
+  background: none;
+  z-index: 10;
+  position: absolute;
+  margin-left: -505px;
+}
+.movieTileOver .movieTileOverInner {
+  margin-left: -250px;
+  margin-top: 0px;
+  padding: 10px;
+  position: realtive;
+  background-color: rgba(26,26,26,0.75);
+  visibility: hidden;
+}
+.movieTileOver:hover .movieTileOverInner {
+  visibility: visible;
+}
+.movieTileOverInner p {
+  margin: 0px;
 }
 .movieInfo {
   min-width: 400px;

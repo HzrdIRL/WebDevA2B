@@ -22,7 +22,12 @@ function onComment(movie){
                 $('.error').hide();
             }
             else{
-                window.location = response.redirect;
+                if(response.redirect){
+                    window.location = response.redirect;
+                }
+                if(response.errors){
+                    $('.error').show();
+                }
             }
         },
         error: function(response){
