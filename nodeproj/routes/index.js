@@ -45,8 +45,8 @@ router.post('/submitLogin', function(req, res, next){
 );
 
 router.post('/submitReg', function(req, res, next){
-    req.check('name', 'Alias most be only letters and/or numbers.').notEmpty();
-    req.check('email', 'Please enter a valid email address.').isEmail();
+    req.check('name', 'Alias does not meet the criteria.').notEmpty();
+    req.check('email', 'Email does not meet the criteria.').isEmail();
     req.check('password', 'Password does not meet the criteria.').notEmpty();
     req.check('confirmPassword', 'Confirmation password must match.').equals(req.body.password);
     //req.check('password', 'Password must match requirements').Length(4);
