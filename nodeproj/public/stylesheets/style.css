@@ -11,11 +11,15 @@ a {
   display: flex;
   align-items: center;
 }
+.page-header {
+  text-align: center;
+}
 .signOut {
   color: #00f;
 }
 .btn-primary {
   background-color: #5bc0de;
+  width: 100%;
 }
 .my-button {
   colour: #00f;
