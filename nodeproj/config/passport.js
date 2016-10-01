@@ -24,41 +24,26 @@ module.exports = function(passport) {
         },
         function(req, email, password, done) {
             process.nextTick(function() {
-                req.session.errors = null;
-                req.check('name', 'A name was empty...').notEmpty();
-                req.check('email', 'A field was empty...').notEmpty();
-                req.check('password', 'A field was empty...').notEmpty();
-                req.check('confirmPassword', 'Confirmation password must match').equals(password);
-                req.check('email', 'Invalid email format').isEmail();
-                //req.check('password', 'Password must match requirements').Length(4);
-                var errors = req.validationErrors();
-                console.log('testing');
-                if(!errors) {
-                    console.log('no errors');
-                    db.User.findOne({'local.email': email}, function (err, user) {
-                        if (err)
-                            return done(err);
-                        if (user) {
-                            return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
-                        } else {
-                            var newUser = new db.User();
-                            newUser.local.name = req.body.name;
-                            newUser.local.email = email;
-                            newUser.local.password = newUser.generateHash(password);
-                            newUser.save(function (err) {
-                                if (err)
-                                    throw err;
-                                return done(null, newUser);
-                            });
-                        }
-                    });
-                }else{
-                    req.session.errors = errors;
-                    console.log('errors');
-                    return done(null, false, req.flash('signupMessage', 'invalid input.'));
-                }
+                db.User.findOne({'local.email': email}, function (err, user) {
+                    if (err)
+                        return done(err);
+                    if (user) {
+                        return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+                    } else {
+                        var newUser = new db.User();
+                        newUser.local.name = req.body.name;
+                        newUser.local.email = email;
+                        newUser.local.password = newUser.generateHash(password);
+                        newUser.save(function (err) {
+                            if (err)
+                                throw err;
+                            return done(null, newUser);
+                        });
+                    }
+                });
             });
-        }));
+        }
+    ));
 
     passport.use('local-login', new LocalStrategy({
             usernameField: 'email',
