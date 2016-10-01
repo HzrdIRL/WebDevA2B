@@ -19,6 +19,8 @@ block content
                                         p= comment.body
                                         p= comment.date
                     br
+                    .error(show="false")
+                        p Comment must not be blank
                     form.form-group.commentForm(id="theForm", action="javascript:;", onsubmit="onComment(" + movie.id + ")")
                         textarea.commentText(id="message", name="message")
                         br

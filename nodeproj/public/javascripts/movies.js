@@ -13,13 +13,14 @@ function onComment(movie){
         success : function(response){
             if(response.user){
                 $('.comments').append("<div class='comment'><h1>" + response.user + "</h1><p>" + data.message + "</p><p>" + response.date + "</p></div>");
+                $('.error').hide();
             }
             else{
                 window.location = response.redirect;
             }
         },
         error: function(response){
-            $('.comments').append("<p>please login to comment</p>");
+            $('.error').show();
         }
     });
 }
