@@ -2,23 +2,21 @@
    Created by Hails on 28/09/2016.
 extends layout
 block content
-    .container.col-xs-10
+    .container.col-xs-12
         .row
-            .col-xs-10.movieDetails
+            .col-xs-10.col-xs-offset-1.movieDetails
                 if(movie)
+                    br
                     img(src=("https://image.tmdb.org/t/p/w500"+movie.poster_path))
                     .col-xs-12.movieInfo
                         .page-header
                             h1= movie.title
                         p= movie.overview
-                    br
-                    if(comments)
-                        .col-xs-12
+                    .col-xs-12
+                        if(comments)
                             .comments
                                 for comment in comments
                                     .comment
-                                        h1.commentTitle= comment._id
-                                        br
                                         p.commentBody= comment.body
                                         br
                                         table.commentTable
@@ -27,11 +25,11 @@ block content
                                                 td.username= comment.user.local.name
                                     for reply in comment.replies
                                         p= reply.body
-                    br
-                    .error(show="false")
-                        p Comment must not be blank
-                    form.form-group.commentForm(id="theForm", action="javascript:;", onsubmit="onComment(" + movie.id + ")")
-                        textarea.commentText(id="message", name="message")
                         br
-                        button.btn(type="submit") Comment
+                        .error(show="false")
+                            p Comment must not be blank
+                        form.form-group.commentForm(id="theForm", action="javascript:;", onsubmit="onComment(" + movie.id + ")")
+                            textarea.commentText(id="message", name="message")
+                            br
+                            button.btn.btn-comment(type="submit") Comment
     script(src="/javascripts/movies.js", type='text/javascript')
