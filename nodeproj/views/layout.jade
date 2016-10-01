@@ -3,7 +3,7 @@ html
   head
 
     // Required CDN's and extensions
-    title= 'Blogsite'
+    title= 'TrekTalk'
     // required for incorporating boostrap
     link(href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css", rel="stylesheet")
     link(href="/node_modules/gentelella/build/css/custom.min.css", rel="stylesheet")
@@ -32,13 +32,13 @@ html
           span.icon-bar
           span.icon-bar
 
-        a(class="navbar-brand" href="/") Movies
+        a(class="navbar-brand" href="/") TrekTalk
 
       .collapse.navbar-collapse#example-navbar-collapse
         ul.nav.navbar-nav
           li: a(href="http://localhost:3000/") Home
-          li: a(href="http://localhost:3000/") About
-          li: a(href="http://localhost:3000/") Contact Us
+          li: a(href="http://localhost:3000/about") About
+          li: a(href="http://localhost:3000/contact") Contact Us
 
         ul.nav.navbar-nav.navbar-right
           if loggedIn

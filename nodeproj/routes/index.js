@@ -27,16 +27,48 @@ router.get('/register', function(req, res, next) {
     res.render('register', { title: 'Register', loggedIn: req.session.loggedIn, name: req.session.name, errors: errors, email: req.session.email});
 });
 
-router.post('/submitLogin', passport.authenticate('local-login', {
-    successRedirect: '/',
-    failureRedirect: '/login',
-    failureFlash: true,
-}));
+router.post('/submitLogin', function(req, res, next){
+        req.check('email', 'Please enter a valid email address.').isEmail();
+        req.check('password', 'Password cannot be empty...').notEmpty();
+        var errors = req.validationErrors();
+        if(errors){
+            req.session.errors = errors;
+            res.redirect("/login");
+        }else{
+            next();
+        }
+    }, passport.authenticate('local-login', {
+        successRedirect: '/',
+        failureRedirect: '/login',
+        failureFlash: true,
+    })
+);
 
-router.post('/submitReg', passport.authenticate('local-signup', {
-    successRedirect: '/',
-    failureRedirect: '/register',
-    failureFlash: true,
-}));
+router.post('/submitReg', function(req, res, next){
+    req.check('name', 'Alias most be only letters and/or numbers.').notEmpty();
+    req.check('email', 'Please enter a valid email address.').isEmail();
+    req.check('password', 'Password does not meet the criteria.').notEmpty();
+    req.check('confirmPassword', 'Confirmation password must match.').equals(req.body.password);
+    //req.check('password', 'Password must match requirements').Length(4);
+    var errors = req.validationErrors();
+    if(errors){
+        req.session.errors = errors;
+        res.redirect("/register");
+    }else{
+        next();
+    }
+}, passport.authenticate('local-signup', {
+        successRedirect: '/login',
+        failureRedirect: '/register',
+        failureFlash: true,
+    })
+);
 
+router.get('/contact', function(req, res, next) {
+    res.render('contact', { title: 'Contact Us'});
+});
+
+router.get('/about', function(req, res, next) {
+    res.render('about', { title: 'About TrekTalk'});
+});
 module.exports = router;
