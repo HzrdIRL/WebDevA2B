@@ -11,8 +11,11 @@ function onComment(movie){
         data: JSON.stringify(data),
         contentType: 'application/json',
         success : function(response){
-            if(response){
+            if(response.user){
                 $('.comments').append("<div class='comment'><h1>" + response.user + "</h1><p>" + data.message + "</p><p>" + response.date + "</p></div>");
+            }
+            else{
+                window.location = response.redirect;
             }
         },
         error: function(response){
