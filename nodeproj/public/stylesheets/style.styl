@@ -8,8 +8,14 @@ a
     min-height: 80vh // These two lines are counted as one :-)
     display: flex
     align-items: center
+.right-align
+  text-align: right
 .page-header
   text-align: center
+.center-text
+  text-align: center
+.center-align
+  align-items: center
 .signOut
   color: blue
 .btn-primary
@@ -33,18 +39,17 @@ a
   background-color: #1a3a95
   text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black
   z-index: 1;
-.movieTileOver
+.movieTileOver //overlay film tiles with hidden detail div
   @extend .movieTile
   background: none
   z-index: 10
   position: absolute
-  margin-left: -505px
+  margin-left: -505px //issue with overlay displaying on incorrect film tile
 .movieTileOver .movieTileOverInner
   @extend .movieTileOver
   margin-left: -250px
   margin-top: 0px
   padding: 10px
-  position: realtive
   background-color: rgba(26,26,26,.75)
   visibility: hidden
 .movieTileOver:hover .movieTileOverInner
