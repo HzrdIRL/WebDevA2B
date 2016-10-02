@@ -37,6 +37,7 @@ router.post('/:movie/comments',
     isLoggedIn,
     function(req, res, next){
         req.check('message', 'Comment cannot be empty').notEmpty();
+        req.sanitize('message').whitelist('\w+');
         var errors = req.validationErrors();
         if(!errors){
             return next();

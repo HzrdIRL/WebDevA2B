@@ -17,18 +17,18 @@ router.get('/', function(req, res, next) {
 router.get('/login', function(req, res, next) {
     var errors = req.session.errors;
     req.session.errors = null;
-    res.render('login', { title: 'Login', loggedIn: req.session.loggedIn, errors: req.session.errors, email: req.session.email, password: req.session.password  });
+    res.render('login', { title: 'Login', loggedIn: req.session.loggedIn, errors: req.session.errors, email: req.session.email, password: req.session.password, message: req.flash('error')});
 });
 
 router.get('/register', function(req, res, next) {
     var errors = req.session.errors;
     req.session.errors = null;
-    res.render('register', { title: 'Register', loggedIn: req.session.loggedIn, name: req.session.name, errors: errors, email: req.session.email});
+    res.render('register', { title: 'Register', loggedIn: req.session.loggedIn, name: req.session.name, errors: errors, email: req.session.email, message: req.flash('error')});
 });
 
 router.post('/submitLogin', function(req, res, next){
         req.check('email', 'Please enter a valid email address.').isEmail();
-        req.check('password', 'Password cannot be empty...').notEmpty();
+        req.check('password', 'Password is invalid').matches(/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?!.*[ \/\[\]]).+/, "g");
         var errors = req.validationErrors();
         if(errors){
             req.session.errors = errors;
@@ -39,16 +39,16 @@ router.post('/submitLogin', function(req, res, next){
     }, passport.authenticate('local-login', {
         successRedirect: '/',
         failureRedirect: '/login',
-        failureFlash: true,
+        failureFlash: true
     })
 );
 
 router.post('/submitReg', function(req, res, next){
     req.check('name', 'Alias does not meet the criteria.').notEmpty();
     req.check('email', 'Email does not meet the criteria.').isEmail();
-    req.check('password', 'Password does not meet the criteria.').notEmpty();
+    req.check('password', 'Password does not meet the criteria.').isLength({min: 4}).matches(/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?!.*[ \/\[\]]).+/, "g");
     req.check('confirmPassword', 'Confirmation password must match.').equals(req.body.password);
-    //req.check('password', 'Password must match requirements').Length(4);
+    req.sanitize('name', 'Alias does not meet the criteria.').whitelist('\w+');
     var errors = req.validationErrors();
     if(errors){
         req.session.errors = errors;
@@ -59,7 +59,7 @@ router.post('/submitReg', function(req, res, next){
 }, passport.authenticate('local-signup', {
         successRedirect: '/login',
         failureRedirect: '/register',
-        failureFlash: true,
+        failureFlash: true
     })
 );
 

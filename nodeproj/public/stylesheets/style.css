@@ -131,6 +131,7 @@ td.time {
 .error {
   display: none;
 }
+.errorReg,
 .comments {
   width: 100%;
   height: 100%;
