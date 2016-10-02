@@ -4,7 +4,6 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var db = require('../models/db');
-var request = require('request');
 var router = express.Router();
 var movieDB = require('moviedb')('84c5c5e5c0b722ea081108dbb52810f1');
 var passport = require('passport');
@@ -20,7 +19,6 @@ router.get('/:movie', function(req, res, next){
 
         db.Comment.find({movie: req.params.movie}).populate('user').exec(function(err, comments){
             if(err) return handleError(err);
-
             res.render('movie', {movie: info, comments: comments});
         });
     });
@@ -35,57 +33,54 @@ router.get('/:movie/comments/:comment', function (req, res, next) {
         });
 });
 
-router.post('/:movie/comments', isLoggedIn, function (req, res, next) {
-    console.log('received');
-    var body = req.body;
-    console.log(body);
-    req.session.successUpdate = false;
-
-    var comment = db.Comment({
-        body: body.message,
-        movie: req.params.movie,
-        date: new Date(),
-        replies: [],
-        user: req.user._id
-    });
-    comment.save();
-    var commentId = comment._id;
-
-    var movie = db.Movie.findOne(
-        {movie: req.params.movie},
-        function(err, movie){
-            if(err){
-                req.session.successUpdate = false;
-            }
+router.post('/:movie/comments',
+    isLoggedIn,
+    function(req, res, next){
+        req.check('message', 'Comment cannot be empty').notEmpty();
+        console.log(req.body);
+        var errors = req.validationErrors();
+        if(!errors){
+            return next();
         }
-    );
+        res.send({errors:'Message cannot be empty'});
+    },
+    function (req, res, next) {
 
-    if(movie != null) {
-        db.Movie.findOneAndUpdate(
-            {movie: req.params.movie},
-            {$push: commentId},
-            {safe: true, upsert: true},
-            function(err, model) {
-                console.log(err);
-            }
-        );
-        req.session.successUpdate = true;
-        console.log('updated');
-    }
-    if(movie == null){
-        var movie = db.Movie({
+        console.log(req.params.movie);
+        console.log(req.user);
+        var time = new Date();
+        var newComment = new db.Comment({
+            body: req.body.message,
             movie: req.params.movie,
-            comments : [commentId]
+            date: time,
+            replies: [],
+            user: req.user._id
+        });
+        req.session.comment = newComment;
+        console.log(newComment);
+        newComment.save();
+        db.Movie
+            .findOne({movie: req.params.movie})
+            .exec(function(err, movie){
+                if(err){
+                    return next();
+                }
+            });
+        req.body.user = req.user.local.name;
+        req.body.date = req.session.comment.date;
+        res.send(req.body);
+    },
+    function(req, res, next){
+        var movie = new db.Movie({
+            movie: req.params.movie,
         });
         movie.save();
-        console.log('new');
-    }
 
-    req.body.user = req.user.local.name;
-    req.body.date = comment.date;
-    res.send(req.body);
-    console.log('done');
-});
+        req.body.user = req.user.local.name;
+        req.body.date = req.session.comment.date;
+        res.send(req.body);
+    }
+);
 
 
 router.post('/:movie/comments/:comment/reply', isLoggedIn, function (req, res, next) {

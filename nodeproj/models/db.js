@@ -52,8 +52,7 @@ var Comment = mongoose.model('Comment', Comment_Schema);
 
 
 var Movie_Schema = new Schema({
-    movie: Number,
-    comments: [{ type: Number, ref: 'Comment' }]
+    movie: Number
 });
 var Movie = mongoose.model('Movie', Movie_Schema);
 

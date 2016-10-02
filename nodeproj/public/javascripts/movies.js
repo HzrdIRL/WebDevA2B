@@ -12,14 +12,26 @@ function onComment(movie){
         contentType: 'application/json',
         success : function(response){
             if(response.user){
-                $('.comments').append("<div class='comment'><h1>" + response.user + "</h1><p>" + data.message + "</p><p>" + response.date + "</p></div>");
+                $('.comments').append(
+                '<div class="comment">' +
+                '<p class="commentBody">'+data.message +'</p><br>' +
+                '<table class="commentTable"><tr class="commentTableRow">' +
+                '<td class="time">'+response.date+'</td>' +
+                '<td class="username">' + response.user + '' +
+                '</td></tr></table></div></div>');
+                $('.error').hide();
             }
             else{
-                window.location = response.redirect;
+                if(response.redirect){
+                    window.location = response.redirect;
+                }
+                if(response.errors){
+                    $('.error').show();
+                }
             }
         },
         error: function(response){
-            $('.comments').append("<p>please login to comment</p>");
+            $('.error').show();
         }
     });
 }

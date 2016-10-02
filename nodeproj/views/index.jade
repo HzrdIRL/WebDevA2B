@@ -12,5 +12,11 @@ block content
                     for movie in movies
                         if(movie)
                             a(href=("/movies/"+movie.id))
-                                .movieTile(style="background-image:url('https://image.tmdb.org/t/p/w500" + movie.backdrop_path + "');")
-                                    h3.movie-title= movie.title
+                                if(movie.backdrop_path != null)
+                                    .movieTile(style="background-image:url('https://image.tmdb.org/t/p/w500" + movie.backdrop_path + "');")
+                                else
+                                    .movieTile
+                                .movieTileOver
+                                    .movieTileOverInner
+                                        p.movieInfo= movie.overview
+                                        h3.movie-title= movie.title
