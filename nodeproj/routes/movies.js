@@ -37,7 +37,6 @@ router.post('/:movie/comments',
     isLoggedIn,
     function(req, res, next){
         req.check('message', 'Comment cannot be empty').notEmpty();
-        console.log(req.body);
         var errors = req.validationErrors();
         if(!errors){
             return next();
@@ -45,7 +44,6 @@ router.post('/:movie/comments',
         res.send({errors:'Message cannot be empty'});
     },
     function (req, res, next) {
-
         console.log(req.params.movie);
         console.log(req.user);
         var time = new Date();
@@ -57,25 +55,25 @@ router.post('/:movie/comments',
             user: req.user._id
         });
         req.session.comment = newComment;
-        console.log(newComment);
         newComment.save();
         db.Movie
             .findOne({movie: req.params.movie})
             .exec(function(err, movie){
-                if(err){
+                if(err || !movie){
                     return next();
                 }
+                else{
+                    req.body.user = req.user.local.name;
+                    req.body.date = req.session.comment.date;
+                    res.send(req.body);
+                }
             });
-        req.body.user = req.user.local.name;
-        req.body.date = req.session.comment.date;
-        res.send(req.body);
     },
     function(req, res, next){
         var movie = new db.Movie({
-            movie: req.params.movie,
+            movie: req.params.movie
         });
         movie.save();
-
         req.body.user = req.user.local.name;
         req.body.date = req.session.comment.date;
         res.send(req.body);

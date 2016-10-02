@@ -19,6 +19,7 @@ function onComment(movie){
                 '<td class="time">'+response.date+'</td>' +
                 '<td class="username">' + response.user + '' +
                 '</td></tr></table></div></div>');
+                $('#message').val('');
                 $('.error').hide();
             }
             else{
