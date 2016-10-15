@@ -17,7 +17,7 @@ router.get('/:movie', function(req, res, next){
         if(err) console.log(err);
         var info = result;
 
-        db.Comment.find({movie: req.params.movie}).populate('user').exec(function(err, comments){
+        db.Comment.find({movie: req.params.movie}).populate('user').populate('replies.user').exec(function(err, comments){
             if(err) console.log(err);
             res.render('movie', {movie: info, comments: comments});
         });

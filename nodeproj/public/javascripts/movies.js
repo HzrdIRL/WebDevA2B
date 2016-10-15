@@ -17,7 +17,16 @@ function onComment(movie){
                 '<p class="commentBody">'+data.message +'</p><br>' +
                 '<table class="commentTable"><tr class="commentTableRow">' +
                 '<td class="time">'+response.date+'</td>' +
-                '<td class="username">' + response.user + '' +
+                '<td class="username">' + response.user + '</td>' +
+                '</tr>' +
+                '<tr class="commentTableRow">' +
+                '<td>' +
+                '</td>' +
+                '<td>' +
+                '<button class="btn btn-reply" + '+response.comment._id+', onclick="replyControl('+response.comment._id+')"> Reply '+
+                '</button>' +
+                '<button class="btn btn-reply" + '+response.comment._id+', onclick="replyControl('+response.comment._id+')", style="display: none"> Hide '+
+                '</button>' +
                 '</td></tr></table></div></div>');
                 $('#message').val('');
                 $('.commentError').hide();
@@ -73,6 +82,6 @@ function onReply(movie, comment){
     });
 }
 
-function replyControl(){
-    $(".replyToggle").toggle();
+function replyControl(id){
+    $("."+id).toggle();
 }
