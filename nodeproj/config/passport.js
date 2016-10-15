@@ -17,6 +17,7 @@ module.exports = function(passport) {
         });
     });
 
+    //Signup Strategy
     passport.use('local-signup', new LocalStrategy({
             usernameField: 'email',
             passwordField: 'password',
@@ -45,6 +46,7 @@ module.exports = function(passport) {
         }
     ));
 
+    //Login Strategy
     passport.use('local-login', new LocalStrategy({
             usernameField: 'email',
             passwordField: 'password',

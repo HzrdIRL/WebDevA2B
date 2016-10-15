@@ -21,6 +21,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+//Putting modules/paths/files into use
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -38,7 +39,7 @@ app.use(passport.session());
 app.use(flash());
 require('./config/passport')(passport);
 
-
+//Use Routes/Controllers
 app.use('/', routes);
 app.use('/movies', movies);
 

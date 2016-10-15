@@ -1,6 +1,7 @@
 /**
  * Created by Hails on 28/09/2016.
  */
+//Ajax add comment
 function onComment(movie){
     event.preventDefault();
     var data = {}
@@ -11,6 +12,7 @@ function onComment(movie){
         data: JSON.stringify(data),
         contentType: 'application/json',
         success : function(response){
+            //Show new comment
             if(response.user){
                 $('.comments').append(
                 '<div class="comment">' +
@@ -22,6 +24,7 @@ function onComment(movie){
                 $('#message').val('');
                 $('.error').hide();
             }
+            //Show errors or redirect
             else{
                 if(response.redirect){
                     window.location = response.redirect;
@@ -30,7 +33,7 @@ function onComment(movie){
                     $('.error').show();
                 }
             }
-        },
+        },// show errors
         error: function(response){
             $('.error').show();
         }

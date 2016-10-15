@@ -9,23 +9,31 @@ var passport = require('passport');
 router.get('/', function(req, res, next) {
     movieDB.searchMovie({query: 'Star Trek'}, function(err, result){
         if(err) console.log(err);
-        console.log(req.isAuthenticated());
-        res.render('index', { title: 'Home', movies: result.results});
+        res.render('index', { title: 'Home', movies: result.results, loggedIn: req.isAuthenticated()});
     });
 });
 
+// GET Login Page
 router.get('/login', function(req, res, next) {
     var errors = req.session.errors;
     req.session.errors = null;
-    res.render('login', { title: 'Login', loggedIn: req.session.loggedIn, errors: req.session.errors, email: req.session.email, password: req.session.password, message: req.flash('error')});
+    res.render('login', { title: 'Login', loggedIn: req.isAuthenticated(), errors: req.session.errors, email: req.session.email, password: req.session.password, message: req.flash('error')});
 });
 
+//GET Register Page
 router.get('/register', function(req, res, next) {
     var errors = req.session.errors;
     req.session.errors = null;
-    res.render('register', { title: 'Register', loggedIn: req.session.loggedIn, name: req.session.name, errors: errors, email: req.session.email, message: req.flash('error')});
+    res.render('register', { title: 'Register', loggedIn: req.isAuthenticated(), name: req.session.name, errors: errors, email: req.session.email, message: req.flash('error')});
 });
 
+//GET Logout Page
+router.get('/logout', function(req, res, next){
+    req.logOut();
+    res.redirect('/');
+});
+
+//POST Login
 router.post('/submitLogin', function(req, res, next){
         req.check('email', 'Please enter a valid email address.').isEmail();
         req.check('password', 'Password is invalid').matches(/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?!.*[ \/\[\]]).+/, "g");
@@ -43,6 +51,7 @@ router.post('/submitLogin', function(req, res, next){
     })
 );
 
+//POST Register
 router.post('/submitReg', function(req, res, next){
     req.check('name', 'Alias does not meet the criteria.').notEmpty();
     req.check('email', 'Email does not meet the criteria.').isEmail();
@@ -63,12 +72,14 @@ router.post('/submitReg', function(req, res, next){
     })
 );
 
+//GET Contact Us Page
 router.get('/contact', function(req, res, next) {
-    res.render('contact', { title: 'Contact Us'});
+    res.render('contact', { title: 'Contact Us', loggedIn: req.isAuthenticated()});
 });
 
+//GET About Us Page
 router.get('/about', function(req, res, next) {
-    res.render('about', { title: 'About TrekTalk'});
+    res.render('about', { title: 'About TrekTalk', loggedIn: req.isAuthenticated()});
 });
 
 module.exports = router;

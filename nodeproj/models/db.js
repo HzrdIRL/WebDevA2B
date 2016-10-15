@@ -12,6 +12,7 @@ db.once('open', function(){});
 
 autoIncrement.initialize(db);
 
+//User Schema
 var Users_Schema = new Schema({
     local: {
         name: String,
@@ -33,6 +34,7 @@ Users_Schema.methods.validPassword = function(password) {
 
 var User = mongoose.model('User', Users_Schema);
 
+//Comment Schema
 var Comment_Schema = new Schema({
     body: String,
     movie: Number,
@@ -50,15 +52,14 @@ var Comment_Schema = new Schema({
 Comment_Schema.plugin(autoIncrement.plugin, 'Comment');
 var Comment = mongoose.model('Comment', Comment_Schema);
 
-
+//Movie Schema
 var Movie_Schema = new Schema({
     movie: Number
 });
 var Movie = mongoose.model('Movie', Movie_Schema);
 
+//Middleware Add Comment
 function addComment(req, res, next) {
-    console.log(req.params.movie);
-    console.log(req.user);
     var time = new Date();
     var newComment = new Comment({
         body: req.body.message,
@@ -83,6 +84,7 @@ function addComment(req, res, next) {
         });
 }
 
+//Middleware Add Movie
 function addmovie(req, res, next){
     var movie = new Movie({
         movie: req.params.movie
@@ -93,8 +95,8 @@ function addmovie(req, res, next){
     res.send(req.body);
 }
 
+//Middleware Add Reply
 function addReply(req, res, next) {
-    console.log('received');
     var body = req.body;
 
     Comment.findOneAndUpdate(
@@ -112,7 +114,6 @@ function addReply(req, res, next) {
     );
 
     res.send(request.body);
-    console.log('done');
 }
 
 module.exports = {
