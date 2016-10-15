@@ -45,7 +45,7 @@ var Comment_Schema = new Schema({
             body: String,
             movie: Number,
             date: Date,
-            user: Number
+            user: {type: Number, ref: 'User'}
         }
     ]
 });
@@ -69,18 +69,20 @@ function addComment(req, res, next) {
         user: req.user._id
     });
     req.session.comment = newComment;
-    newComment.save();
-    Movie
-        .findOne({movie: req.params.movie})
-        .exec(function(err, movie){
-            if(err || !movie){
-                return next();
-            }
-            else{
-                req.body.user = req.user.local.name;
-                req.body.date = req.session.comment.date;
-                res.send(req.body);
-            }
+    newComment.save(function(err, comment){
+        Movie
+            .findOne({movie: req.params.movie})
+            .exec(function(err, movie){
+                if(err || !movie){
+                    return next();
+                }
+                else{
+                    req.body.user = req.user.local.name;
+                    req.body.date = req.session.comment.date;
+                    req.body.comment = comment;
+                    res.send(req.body);
+                }
+            });
         });
 }
 
@@ -112,8 +114,10 @@ function addReply(req, res, next) {
             console.log(err);
         }
     );
-
-    res.send(request.body);
+    req.body.user = req.user.local.name;
+    req.body.date = req.session.comment.date;
+    res.send(req.body);
+    console.log('done');
 }
 
 module.exports = {
