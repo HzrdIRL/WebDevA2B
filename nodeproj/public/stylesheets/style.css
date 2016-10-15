@@ -5,6 +5,12 @@ body {
 a {
   color: #00b7ff;
 }
+.btn-reply {
+  background-color: #5bc0de;
+  color: #fff;
+  float: right;
+  margin: 0;
+}
 .vertical-center {
   min-height: 80%;
   min-height: 80vh;
@@ -127,7 +133,9 @@ td.time {
   text-align: left;
   font-size: 10px;
 }
-.error {
+.error,
+.commentError,
+.replyError {
   display: none;
 }
 .errorReg,

@@ -3,6 +3,11 @@ body
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif
 a
   color: #00B7FF
+.btn-reply
+  background-color: #5bc0de
+  color: white
+  float: right
+  margin: 0
 .vertical-center
     min-height: 80%  // Fallback for browsers do NOT support vh unit
     min-height: 80vh // These two lines are counted as one :-)
@@ -99,6 +104,10 @@ td.time
   font-size: 10px
 .error
   display: none
+.commentError
+  @extend .error
+.replyError
+  @extend .error
 .errorReg
 .comments
   width: 100%

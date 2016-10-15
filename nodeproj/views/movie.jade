@@ -25,10 +25,30 @@ block content
                                             tr.commentTableRow
                                                 td.time= comment.date
                                                 td.username= comment.user.local.name
-                                    for reply in comment.replies
-                                        p= reply.body
+                                            tr.commentTableRow
+                                                td
+                                                td
+                                                    button.btn.btn-reply.replyToggle(onclick="replyControl()") Replies
+                                                    button.btn.btn-reply.replyToggle(onclick="replyControl()", style="display: none;") Hide Replies...
+
+                                    .replies.replyToggle(style="display: none;")
+                                        for reply in comment.replies
+                                            .comment
+                                                p.commentBody= reply.body
+                                                br
+                                                table.commentTable
+                                                    tr.commentTableRow
+                                                        td.time= reply.date
+                                                        td.username= reply.user.local.name
+                                        br
+                                        .replyError(show="false")
+                                            p Comment must not be blank
+                                        form.form-group.commentForm(id="theForm", action="javascript:;", onsubmit="onReply(" + movie.id + "," + comment.id +")")
+                                            textarea.commentText(id="reply", name="reply")
+                                            br
+                                            button.btn.btn-primary.btn-comment(type="submit") Reply
                         br
-                        .error(show="false")
+                        .commentError(show="false")
                             p Comment must not be blank
                         form.form-group.commentForm(id="theForm", action="javascript:;", onsubmit="onComment(" + movie.id + ")")
                             textarea.commentText(id="message", name="message")

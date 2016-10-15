@@ -20,19 +20,59 @@ function onComment(movie){
                 '<td class="username">' + response.user + '' +
                 '</td></tr></table></div></div>');
                 $('#message').val('');
-                $('.error').hide();
+                $('.commentError').hide();
             }
             else{
                 if(response.redirect){
                     window.location = response.redirect;
                 }
                 if(response.errors){
-                    $('.error').show();
+                    $('.commentError').show();
                 }
             }
         },
         error: function(response){
-            $('.error').show();
+            $('.commentError').show();
         }
     });
+}
+
+function onReply(movie, comment){
+    event.preventDefault();
+    var data = {}
+    data.message = $("#reply").val();
+    $.ajax({
+        type: "POST",
+        url:  "/movies/"+ movie +'/comments/' + comment + "/reply",
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        success : function(response){
+            if(response.user){
+                $('.replies').append(
+                    '<div class="comment">' +
+                    '<p class="commentBody">'+data.message +'</p><br>' +
+                    '<table class="commentTable"><tr class="commentTableRow">' +
+                    '<td class="time">'+response.date+'</td>' +
+                    '<td class="username">' + response.user + '' +
+                    '</td></tr></table></div></div>');
+                $('#reply').val('');
+                $('.replyError').hide();
+            }
+            else{
+                if(response.redirect){
+                    window.location = response.redirect;
+                }
+                if(response.errors){
+                    $('.replyError').show();
+                }
+            }
+        },
+        error: function(response){
+            $('.replyError').show();
+        }
+    });
+}
+
+function replyControl(){
+    $(".replyToggle").toggle();
 }
