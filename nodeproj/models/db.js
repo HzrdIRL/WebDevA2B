@@ -56,8 +56,70 @@ var Movie_Schema = new Schema({
 });
 var Movie = mongoose.model('Movie', Movie_Schema);
 
+function addComment(req, res, next) {
+    console.log(req.params.movie);
+    console.log(req.user);
+    var time = new Date();
+    var newComment = new Comment({
+        body: req.body.message,
+        movie: req.params.movie,
+        date: time,
+        replies: [],
+        user: req.user._id
+    });
+    req.session.comment = newComment;
+    newComment.save();
+    Movie
+        .findOne({movie: req.params.movie})
+        .exec(function(err, movie){
+            if(err || !movie){
+                return next();
+            }
+            else{
+                req.body.user = req.user.local.name;
+                req.body.date = req.session.comment.date;
+                res.send(req.body);
+            }
+        });
+}
+
+function addmovie(req, res, next){
+    var movie = new Movie({
+        movie: req.params.movie
+    });
+    movie.save();
+    req.body.user = req.user.local.name;
+    req.body.date = req.session.comment.date;
+    res.send(req.body);
+}
+
+function addReply(req, res, next) {
+    console.log('received');
+    var body = req.body;
+
+    Comment.findOneAndUpdate(
+        {movie: req.params.movie, _id: req.params.comment},
+        {$push: {"replies": {
+            body: body.message,
+            movie: req.params.movie,
+            date: new Date(),
+            user: req.user._id
+        }}},
+        {safe: true, upsert: true},
+        function(err, model) {
+            console.log(err);
+        }
+    );
+
+    res.send(request.body);
+    console.log('done');
+}
+
 module.exports = {
     User : User,
     Movie: Movie,
-    Comment: Comment
+    Comment: Comment,
+    addComment: addComment,
+    addMovie: addmovie,
+    addReply: addReply
 };

@@ -12,7 +12,6 @@ var LocalStrategy = require('passport-local').Strategy;
 var mongoose = require('mongoose');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
 var movies = require('./routes/movies');
 require('./models/db');
 
@@ -33,7 +32,7 @@ app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/node_modules', express.static(__dirname + '/node_modules'));
 app.use(expressSession({secret: 'max', saveUninitialized: false, resave: false}));
-app.use(expressSession({ secret: 'shhsecret'}));
+app.use(expressSession({ secret: 'shhsecret', saveUninitialized: false, resave: false}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
@@ -41,7 +40,6 @@ require('./config/passport')(passport);
 
 
 app.use('/', routes);
-app.use('/users', users);
 app.use('/movies', movies);
 
 // catch 404 and forward to error handler

@@ -37,72 +37,18 @@ router.post('/:movie/comments',
     isLoggedIn,
     function(req, res, next){
         req.check('message', 'Comment cannot be empty').notEmpty();
-        req.sanitize('message').whitelist('\w+');
+        req.check('message', 'Must only contain plain text').matches(/\w+/, 'g');
         var errors = req.validationErrors();
         if(!errors){
             return next();
         }
         res.send({errors:'Message cannot be empty'});
     },
-    function (req, res, next) {
-        console.log(req.params.movie);
-        console.log(req.user);
-        var time = new Date();
-        var newComment = new db.Comment({
-            body: req.body.message,
-            movie: req.params.movie,
-            date: time,
-            replies: [],
-            user: req.user._id
-        });
-        req.session.comment = newComment;
-        newComment.save();
-        db.Movie
-            .findOne({movie: req.params.movie})
-            .exec(function(err, movie){
-                if(err || !movie){
-                    return next();
-                }
-                else{
-                    req.body.user = req.user.local.name;
-                    req.body.date = req.session.comment.date;
-                    res.send(req.body);
-                }
-            });
-    },
-    function(req, res, next){
-        var movie = new db.Movie({
-            movie: req.params.movie
-        });
-        movie.save();
-        req.body.user = req.user.local.name;
-        req.body.date = req.session.comment.date;
-        res.send(req.body);
-    }
+    db.addComment,
+    db.addMovie
 );
 
-
-router.post('/:movie/comments/:comment/reply', isLoggedIn, function (req, res, next) {
-    console.log('received');
-    var body = req.body;
-
-    db.Comment.findOneAndUpdate(
-        {movie: req.params.movie, _id: req.params.comment},
-        {$push: {"replies": {
-            body: body.message,
-            movie: req.params.movie,
-            date: new Date(),
-            user: req.user._id
-        }}},
-        {safe: true, upsert: true},
-        function(err, model) {
-            console.log(err);
-        }
-    );
-
-    res.send(request.body);
-    console.log('done');
-});
+router.post('/:movie/comments/:comment/reply', isLoggedIn, db.addReply);
 
 module.exports = router;
 

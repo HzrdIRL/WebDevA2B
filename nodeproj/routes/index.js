@@ -48,7 +48,7 @@ router.post('/submitReg', function(req, res, next){
     req.check('email', 'Email does not meet the criteria.').isEmail();
     req.check('password', 'Password does not meet the criteria.').isLength({min: 4}).matches(/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?!.*[ \/\[\]]).+/, "g");
     req.check('confirmPassword', 'Confirmation password must match.').equals(req.body.password);
-    req.sanitize('name', 'Alias does not meet the criteria.').whitelist('\w+');
+    req.check('name', 'Alias does not meet the criteria.').matches(/\w+/, 'g');
     var errors = req.validationErrors();
     if(errors){
         req.session.errors = errors;
