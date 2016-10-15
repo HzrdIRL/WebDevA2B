@@ -78,8 +78,10 @@ a
   height: 200px
 .btn-comment
   width: 100%
-.replies
-  padding: 20px
+.replyForm
+  @extend .commentForm
+  min-width: auto
+.reply
 .comment
   width: 100%
   border: 4px solid #2B2B2B
@@ -116,3 +118,6 @@ td.time
   height: 100%
   min-width: 400px
   text-align: center
+.replies
+  @extend .comment
+  border: none

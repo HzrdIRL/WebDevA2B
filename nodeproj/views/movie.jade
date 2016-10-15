@@ -33,7 +33,7 @@ block content
 
                                     .replies(class=comment.id, style="display: none;")
                                         for reply in comment.replies
-                                            .comment
+                                            .reply
                                                 p.commentBody= reply.body
                                                 br
                                                 table.commentTable
@@ -43,7 +43,7 @@ block content
                                         br
                                         .replyError(show="false")
                                             p Comment must not be blank
-                                        form.form-group.commentForm(id="theForm", action="javascript:;", onsubmit="onReply(" + movie.id + "," + comment.id +")")
+                                        form.form-group.replyForm(id="theForm", action="javascript:;", onsubmit="onReply(" + movie.id + "," + comment.id +")")
                                             textarea.commentText(id="reply", name="reply")
                                             br
                                             button.btn.btn-primary.btn-comment(type="submit") Reply
