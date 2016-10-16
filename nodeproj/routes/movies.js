@@ -1,5 +1,5 @@
 /**
- * Created by Hails on 28/09/2016.
+ * Created by Helen Giapitzakis on 28/09/2016.
  */
 var express = require('express');
 var mongoose = require('mongoose');

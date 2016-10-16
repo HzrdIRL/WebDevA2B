@@ -55,6 +55,7 @@ function onComment(movie){
     });
 }
 
+//Ajax add reply
 function onReply(movie, comment){
     event.preventDefault();
     var data = {};
@@ -66,6 +67,7 @@ function onReply(movie, comment){
         data: JSON.stringify(data),
         contentType: 'application/json',
         success : function(response){
+            // Show new reply
             if(response.user){
                 $('#'+comment).append(
                     '<div class="comment">' +
@@ -77,6 +79,7 @@ function onReply(movie, comment){
                 $("#reply"+comment).val('');
                 $('.replyError').hide();
             }
+            //Show errors or redirect
             else{
                 if(response.redirect){
                     window.location = response.redirect;
@@ -87,6 +90,7 @@ function onReply(movie, comment){
                 }
             }
         },
+        //show errors
         error: function(response){
             console.log('ajax error');
             $('.replyError').show();
@@ -94,6 +98,7 @@ function onReply(movie, comment){
     });
 }
 
+//Handles animation for show/hide replies
 function replyControl(id){
     $("."+id).toggle();
 }

@@ -1,5 +1,4 @@
-//
-   Created by Hails on 28/09/2016.
+//Created by Helen Giapitzakis on 28/09/2016.
 extends layout
 block content
     .container.col-xs-12
@@ -30,7 +29,6 @@ block content
                                                 td
                                                     button.btn.btn-reply(class=comment.id, onclick="replyControl("+comment.id+")") Replies
                                                     button.btn.btn-reply(class=comment.id, onclick="replyControl("+comment.id+")", style="display: none;") Hide
-
                                     .replies(class=comment.id, id=comment.id style="display: none;")
                                         for reply in comment.replies
                                             .reply
