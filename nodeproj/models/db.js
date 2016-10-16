@@ -74,6 +74,7 @@ function addComment(req, res, next) {
             .findOne({movie: req.params.movie})
             .exec(function(err, movie){
                 if(err || !movie){
+                    req.session.comment = comment;
                     return next();
                 }
                 else{
@@ -92,6 +93,7 @@ function addmovie(req, res, next){
         movie: req.params.movie
     });
     movie.save();
+    req.body.comment = req.session.comment;
     req.body.user = req.user.local.name;
     req.body.date = req.session.comment.date;
     res.send(req.body);
@@ -100,9 +102,8 @@ function addmovie(req, res, next){
 //Middleware Add Reply
 function addReply(req, res, next) {
     var body = req.body;
-
     Comment.findOneAndUpdate(
-        {movie: req.params.movie, _id: req.params.comment},
+        {_id: req.params.comment},
         {$push: {"replies": {
             body: body.message,
             movie: req.params.movie,
@@ -111,13 +112,14 @@ function addReply(req, res, next) {
         }}},
         {safe: true, upsert: true},
         function(err, model) {
-            console.log(err);
+            if(err){
+                console.log(err);
+            }
         }
     );
     req.body.user = req.user.local.name;
     req.body.date = req.session.comment.date;
     res.send(req.body);
-    console.log('done');
 }
 
 module.exports = {

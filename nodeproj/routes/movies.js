@@ -53,7 +53,17 @@ router.post('/:movie/comments',
 );
 
 //POST Add Reply
-router.post('/:movie/comments/:comment/reply', isLoggedIn, db.addReply);
+router.post('/:movie/comments/:comment/reply', isLoggedIn,
+    function(req, res, next){
+        req.check('message', 'Comment cannot be empty').notEmpty();
+        req.check('message', 'Must only contain plain text').matches(/\w+/, 'g');
+        var errors = req.validationErrors();
+        if(!errors){
+            return next();
+        }
+        res.send({errors:'Message cannot be empty'});
+    },
+    db.addReply);
 
 module.exports = router;
 

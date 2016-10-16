@@ -29,9 +29,9 @@ block content
                                                 td
                                                 td
                                                     button.btn.btn-reply(class=comment.id, onclick="replyControl("+comment.id+")") Replies
-                                                    button.btn.btn-reply(class=comment.id, onclick="replyControl("+comment.id+")", style="display: none;") Hide Replies...
+                                                    button.btn.btn-reply(class=comment.id, onclick="replyControl("+comment.id+")", style="display: none;") Hide
 
-                                    .replies(class=comment.id, style="display: none;")
+                                    .replies(class=comment.id, id=comment.id style="display: none;")
                                         for reply in comment.replies
                                             .reply
                                                 p.commentBody= reply.body
@@ -44,7 +44,7 @@ block content
                                         .replyError(show="false")
                                             p Comment must not be blank
                                         form.form-group.replyForm(id="theForm", action="javascript:;", onsubmit="onReply(" + movie.id + "," + comment.id +")")
-                                            textarea.commentText(id="reply", name="reply")
+                                            textarea.commentText(id="reply"+comment.id, name="reply")
                                             br
                                             button.btn.btn-primary.btn-comment(type="submit") Reply
                         br
