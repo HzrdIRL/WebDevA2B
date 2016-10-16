@@ -26,11 +26,12 @@ module.exports = function(passport) {
         function(req, email, password, done) {
             process.nextTick(function() {
                 db.User.findOne({'local.email': email}, function (err, user) {
-                    if (err)
+                    if (err) //error occurred
                         return done(err);
+                    //user with this email found in db
                     if (user) {
                         return done(null, false, {message: 'That email is already taken.'});
-                    } else {
+                    } else { // create new user
                         var newUser = new db.User();
                         newUser.local.name = req.body.name;
                         newUser.local.email = email;
@@ -54,13 +55,13 @@ module.exports = function(passport) {
         },
         function(req, email, password, done) {
             db.User.findOne({ 'local.email':  email }, function(err, user) {
-                if (err)
+                if (err) // error occurred
                     return done(err);
-                if (!user)
+                if (!user)//no user found with entered details
                     return done(null, false, {message: 'No user found.'});
-                if (!user.validPassword(password))
+                if (!user.validPassword(password)) //password entered does not match stored password
                     return done(null, false, {message: 'Oops! Wrong password.'});
-                return done(null, user);
+                return done(null, user); //successfully login
             });
         }));
 
