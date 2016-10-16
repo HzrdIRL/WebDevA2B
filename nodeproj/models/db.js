@@ -2,7 +2,15 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     bcrypt = require('bcrypt-nodejs'),
     autoIncrement = require('mongoose-auto-increment');
-mongoose.connect("mongodb://localhost:27017/partB");
+    credentials = require('../config/credentials');
+//Keep server alive, prevent errors from disconnections
+var opts = {
+    server: {
+        socketOptions: { keepAlive: 1 }
+    }
+};
+//setup connection
+mongoose.connect(credentials.mongo.development.connectionString, opts);
 var db = mongoose.connection;
 require("mongoose-type-email");
 
